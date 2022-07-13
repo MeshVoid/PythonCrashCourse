@@ -18,8 +18,6 @@ def greet_user(): # function definition
     print("Hello!")
 
 greet_user() # calling a function
-
-
 ```
 
 ## Passing information to a function
@@ -347,3 +345,77 @@ function_name(list_name[:])
 The slice notation [:] makes a copy of the list to send to the function.
 
 Even though you can preserve the contents of a list by passign a copy of it to your functions, you should pass the original list to functions unless you have a specific reason to pass a copy.
+
+
+## Passing an arbitrary number of arguments
+
+Sometimes you don't know how many arguments a function will need to accept as you are in the process of writing it.
+
+Fortunately, Python allows a function to collect an arbitrary number of arguments from the calling statement.
+
+```python
+def make_pizza(*toppings): # we use * before the argument
+    """Print the list of toppings that have been requested."""
+    print(toppings)
+
+make_pizza("pepperoni")
+make_pizza("mushrooms","green peppers","extra cheese")
+```
+The aterisk * symbol before the argument name tells Python to make an empty tuple called **toppings** and pack whatever values it receives into a tuple.
+
+```python
+def make_pizza(*toppings):
+    """Summarize the pizza we are about to make."""
+    print("\nMaking a pizza with the following toppings:")
+    for topping in toppings:
+        print(f"- {topping}")
+
+make_pizza("pepperoni")
+make_pizza("mushrooms","green peppers","extra cheese")
+```
+This syntax with an asteriks and an argument name - *argument_name. Works no matter how many arguments the function receives.
+
+## Mixing positional and arbitrary arguments
+
+
+If you want a function to accept several different kinds of arguments, the parameter that accepts an arbitrary amount of arguments must be placed last in the function definition.
+
+Python always matches positional arguments first and then collects any remaining arguments in the final paramenter.
+
+EXAMPLE:
+```python
+# Mixing Positional and Arbitrary Arguments
+def make_pizza(size, *toppings):
+    """Summarize the pizza we are about to make."""
+    print(f"\nMaking a {size}-inch pizza with the following toppings:")
+    for topping in toppings:
+        print(f"- {topping}")
+
+make_pizza(16, "pepperoni")
+make_pizza(12, "mushrooms","green peppers","extra cheese")
+```
+_You’ll often see the generic parameter name *args, which collects arbitrary positional arguments like this._
+
+
+## Using arbitrary keyword arguments
+
+Sometimes you'll want to accept an arbitrary number of arguments, but you won't know ahead of time what kind of information will be passed to the function.
+
+In this case, you can write functions that accept as many key-value pairs as the calling statement provides.
+
+```python
+def build_profile(first, last, **user_info):
+    """Build a dictionary containing everything we know about a user."""
+    user_info['first_name'] = first
+    user_info['last_name'] = last
+    return user_info
+
+user_profile = build_profile('albert', 'einstein', location='princeton', field='physics')
+
+print(user_profile)
+```
+
+We indicate arbitrary arguments with _**argument_, you will often see the parameter name **kwargs used to collect non-specific keyword arguments. ** - makes dictionary out of arbitrary arguments
+
+
+# Storing your functions in modules
