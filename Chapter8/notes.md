@@ -346,4 +346,4 @@ function_name(list_name[:])
 ```
 The slice notation [:] makes a copy of the list to send to the function.
 
-youyo
+Even though you can preserve the contents of a list by passign a copy of it to your functions, you should pass the original list to functions unless you have a specific reason to pass a copy.
