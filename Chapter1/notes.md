@@ -1,0 +1,1 @@
+- No notes here, stuff is basic, just installing Python on different OS, it's easy, really
