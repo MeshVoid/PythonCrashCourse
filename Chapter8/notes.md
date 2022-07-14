@@ -419,3 +419,153 @@ We indicate arbitrary arguments with _**argument_, you will often see the parame
 
 
 # Storing your functions in modules
+
+One advantage of functions is the way they separate blocks of code from your main program. By using descriptive names for your functions, your main program will be much easier to follow. You can go a step further by storing your functions in a separate file called a _module_ and the _importing_ that module into your main program.
+
+An **_import_** statement tells Python to make the code in a module available in the currently running program file.
+
+Storing funcitons separately in a different file allows you to hide the details of your program's code and focus on it's higher-level logic. 
+
+## Importing an entire module
+
+A _module_ is a file ending in .py that contains the code you want to import into your program.
+
+Let's take the following function and store it in a separate file, for example:
+```python
+#stored in pizza_module.py
+def make_pizza(size, *toppings):
+    """Summarize the pizza we are about to make."""
+    print(f"\nMaking a {size}-inch pizza with the following toppings:")
+    for topping in toppings:
+        print(f"- {topping}")
+```
+Now, we'll make a separate file called making_pizzas.py in the same directory as pizza_module.py
+
+```python
+#file making_pizzas.py 
+import pizza_module # use keyword import and the name of our py file
+
+pizza_module.make_pizza(14, 'pepperoni') # call functions from imported module: module_name.func_name(args)
+pizza_module.make_pizza(16, 'mushrooms', 'green peppers', 'extra cheese')
+```
+
+_If you use this kind of import statement to import an entire module named module_name.py, each function in the module is available through the following syntax:_
+```python
+module_name.function_name()
+```
+
+## Importing specific functions
+
+You can also import a specific function from a module. Here' the general syntax for this approach:
+
+```python
+from module_name import function_name
+```
+You can import as many functions as you want from a module by separating each function's name with a comma:
+```python
+from module_name import function_0, function_1, function_2, function_3
+```
+Just add FROM and then indicate what to IMPORT and it'll work just as fine as it did before:
+```python
+from pizza_module import make_pizza
+
+make_pizza(14, 'pepperoni') # no need for pizza_module. now!
+make_pizza(16, 'mushrooms', 'green peppers', 'extra cheese')
+```
+
+## Using 'as' to give a function alias
+
+If the name of a function you're importing might conflict with an existing name in your program or the function name is just too long, you can use a short, unique alias - an alternate name similar to a nickname for the function.
+
+```python
+from pizza_module import make_pizza as mp # giving an alias name to the function make_pizza
+
+mp(14, 'pepperoni') # now it's a short name mp
+mp(16, 'mushrooms', 'green peppers', 'extra cheese')
+```
+SYNTAX:
+```python
+from module_name import function_name as fn
+```
+
+## Using 'as' to give a module an alias
+
+You can also provide an alias for a module name. Giving a modle a short alias, like p for pizza, allows you to call the module's functions more quickly.
+
+Calling p.make_pizze() is more concise that calling pizza_module.make_pizza():
+```python
+import pizza_module as p # giving an alias to the whole pizza_module
+
+p.make_pizza(14, 'pepperoni')  # now it's a short name mp
+p.make_pizza(16, 'mushrooms', 'green peppers', 'extra cheese')
+```
+Syntax:
+```python
+import module_name as mn
+```
+
+
+## Importing all functions in a module
+
+You can also import every single function in a module by using the asterisk (*) operator:
+
+```python
+from pizza_module import * # import all functions in a module
+
+make_pizza(16, 'pepperoni')
+```
+
+The (*) asterisk in the import statement tells Python to copy every function from the given module into the current program file.
+And because every function is imported into your file, you can call each function from the imported module without using the dot notation.
+
+It's important to note, that it is best **not to use this approach** when you're working with larger modules that you didn't write: if a module has a function name that matches an existing name in your project, you can get some unexpected results. For example, Python may see several functions or variables with the same name and instead of importing all the functions separately, it **will overwrite the functions**.
+
+**The best approach** is to **import the function** of functions you want, or **import the entire module** and use the dot notation. This will lead to clear code that's easy to read and understand. But it's beneficial to know the syntax so that you could recognize it somebody else's code.
+Syntax:
+```python
+from module_name import *
+```
+
+## Styling functions
+
+When dealing with functions make sure they have descriptive names, and these names should use lowercase letters and underscores.
+
+Descriptive nmes help you and other understand what your code is trying to do. Module names should use these conventions as well.
+
+Every function should have a comment that explains concisely what the function does right after the function definition and use the docsrting ''' ''' format. 
+
+If a function is well-documented other programmers can use the function by reading only the description in the docstring. Other programmers should be able to trust that the code works as described in the function description. As long as others know the name of the function, the arguments it needs and the kind of value it returns, they should be able to use it in their programs.
+
+If you indicate a **default value for a certain parameter, then you shouldn't use any spaces on either side of the equal sign!
+Syntax:
+```python
+def function_name(parameter_0, parameter_1='default value')
+```
+
+The same convention should be used for keyword arguments in function calls:
+```python
+function_name(value_0, parameter_1='value')
+```
+According to PEP 8, it is recommended that you limit the lines of code to 79 characters.
+If a set of parameters causes a function's definition to be too long, then press ENTER
+and open parenthesis on the definition line:
+
+```python
+def function_name(
+        parameter_0, parameter_1, parameter_2,
+        parameter_3, parameter_4, parameter_5):
+    function body...
+```
+
+If your program or module has more than one function, you can separate each by two blank lines to make it easier to see where one function ends and the next one begins.
+
+All **import** statements should be writter at the beginning of a file.
+
+## Summary of Chapter 8:
+Write simple code that does what you want it to, and utilise functions to do so. Functions allow you to write blocks of code and leave them alone once you know they work properly. When you're finished writing a function you can trust that it will always work and move on to your next coding task.
+
+Functions allow you to write code once and then reuse that code as many times as you want. When you need to run the code in a function, all you need to do is write a one-line call and the function does its job. When you need to modify a function's behavior, you only have to modify one block of code, and your changes takes effect everywhere you've made a call to that function.
+
+Using functions makes your programs easier to read, and good function names summarize what each part of a program does. Reading a series of function calls gives you a much quicker sense of what a program does than reading a long series of code blocks.
+
+Functions also make your code easier to test and debug. When the bulk of your program’s work is done by a set of functions, each of which has a specific job, it’s much easier to test and maintain the code you’ve written. You can write a separate program that calls each function and tests whether each function works in all the situations it may encounter. When you do this, you can be confident that your functions will work properly each time you call them.

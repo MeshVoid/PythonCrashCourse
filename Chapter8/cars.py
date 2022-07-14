@@ -11,6 +11,7 @@
 # Print the dictionary that’s returned to make sure all the information was stored correctly
 
 def make_car(manufacturer, model, **kwargs):
+    '''Build a dictionary with car data in it'''
     kwargs['manufacturer'] = manufacturer
     kwargs['model'] = model
     return kwargs
