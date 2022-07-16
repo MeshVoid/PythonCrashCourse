@@ -560,3 +560,201 @@ But if we’re describing a manufacturer’s entire line of cars, we probably wa
 When you ask yourself questions like this you're already thinking at a higher logical level rather than a syntax-focused level. You're thinking not about Python, but about how to represent the real-world in code. When you reach this point, you'll realize there are often no right or wrong approaches to modeling real-world situations.
 
 If your code is working as you want it to, you’re doing well! Don’t be discouraged if you find you’re ripping apart your classes and rewriting them several times using different approaches. In the quest to write accurate, efficient code, everyone goes through this process.
+
+## Importing classes
+
+As you add more functionality to your classes, your files can get long, even when you use inheritance properly. In keeping with the overall philosophy of Python, you'll want to keep your files as uncluttered as possible. To help, Python lets you store classes in modules and then import the classes you need into your main program.
+
+```python
+from car import Car # importing class Car from car.py module
+
+my_new_car = Car('audi', 'a4', 2019)
+print(my_new_car.get_descriptive_name())
+
+my_new_car.odometer_reading = 23
+my_new_car.read_odometer()
+```
+
+Importing classes is an effective way to program. Picture how long this program file would be if the entire Car class were included. When you instead move the class to a module and import the module, you still get all the same functionality, but you keep your main program file clean and easy to read. You also store most of the logic in separate files; once your classes work as you want them to, you can leave those files alone and focus on the higher-level logic of your main program.
+
+## Storing multiple classes in a module
+
+You can store as many classes as you need in a single module, although each class in a module should be related somehow.
+
+Let's store multiple classes in one file:
+```python
+"""A set of classed that can be used to represent gas and electic cars."""  # docstring that will be viewed when we import the class
+
+# car.py
+class Car:
+    """A simple attempt to represent a car."""
+
+    def __init__(self, manufacturer, model, year):
+        """Initialize attributes to describe a car."""
+        self.manufacturer = manufacturer
+        self.model = model
+        self.year = year
+        self.odometer_reading = 31  # setting a default value for an attribute
+
+    def get_descriptive_name(self):
+        """Return a neatly formatted descriptive name."""
+        long_name = f"\n{self.year} {self.manufacturer} {self.model}"
+        return long_name.title()
+
+    def read_odometer(self):  # adding new method
+        """Print a statement showing the car's mileage."""
+        print(f"This car has {self.odometer_reading} miles on it.")
+
+    def update_odometer(self, mileage):  # method we use to modify attribute's value
+        """Set the odometer reading to the given value.
+        Reject the change if it attempts to roll the odometer back."""
+        if mileage >= self.odometer_reading:
+            self.odometer_reading = mileage
+        else:
+            print("You can't roll back an odometer!")
+
+    def increment_odometer(self, miles):
+        """Add the given amount to the odometer reading."""
+        self.odometer_reading += miles
+
+
+class Battery:  # Defining a separate class for a Battery
+    """ A simple attempt to model a battery for an electric car."""
+
+    def __init__(self, battery_size=75):
+        """Initialize the battery's attributes."""
+        self.battery_size = battery_size
+
+    def describe_battery(self):
+        """Print a statement describing the battery size."""
+        print(f"This car has a {self.battery_size}-kWh battery.")
+
+    def get_range(self):
+        """Print a statement about the range this battery provides."""
+        if self.battery_size == 75:
+            range = 260
+        elif self.battery_size == 100:
+            range = 315
+        print(f"This car can go about {range} miles on a full charge.")
+
+
+class ElectricCar(Car):
+    """Represents aspects of a car, specific to electric vehicles."""
+
+    def __init__(self, manufacturer, model, year):
+        """Initialize attributes of the parent class.
+           Then initialize attributes specific to an electric car.
+        """
+        super().__init__(manufacturer, model, year)
+        self.battery = Battery()  # <- instance of a class Battery used here
+
+    def describe_battery(self):
+        """Print a statement describing the battery size."""
+        print(f"This car has a {self.battery_size}-kWh battery.")
+
+    def fill_gas_tank(self):
+        """Electric cars don't have gas tanks."""
+        print("This car doesn't need a gas tank!")
+```
+
+Let's import classes we need:
+```python
+from car import ElectricCar # imporint ElectricCar class from car.py module
+
+my_tesla = ElectricCar('tesla', 'Model Scam', 2019)
+
+print(my_tesla.get_descriptive_name())
+my_tesla.battery.describe_battery()
+my_tesla.battery.get_range()
+my_tesla.increment_odometer(45)
+my_tesla.read_odometer()
+```
+
+
+## Importing multiple classes from a module
+
+You can import as many classes as you need into a program file. If we want to make a regular car and an electric car in the same file, we need to import both classes, Car and ElectricCar:
+
+```python
+from car import Car, ElectricCar # import 2 classes from car.py module
+
+my_beetle = Car('Volkswagen', 'beetle', 2019)
+print(my_beetle.get_descriptive_name())
+
+my_tesla = ElectricCar('tesla', 'model scum', 2018)
+print(my_tesla.get_descriptive_name())
+```
+
+## Importing an entire module
+
+You can also import an entire module and then access the classes you need using dot notation. This is a simple approach that results in a readable code.
+```python
+import car # importing an entire car.py module
+
+my_beetle = Car('Volkswagen', 'beetle', 2019)
+print(my_beetle.get_descriptive_name())
+
+my_tesla = ElectricCar('tesla', 'model scum', 2018)
+print(my_tesla.get_descriptive_name())
+```
+
+## Importing all classes from a module
+
+You can import every class from a module using the following syntax:
+> from module_name import *
+
+This method is not recommended for two reasons. First, it's helpful to be able to read the import statements at the top of a file and get a clear sense of which classes a program uses. With this approach it's unclear which classes you're using from the module. This approach can also lead to confusion with names in the file.
+
+If you accidentally import a class with the same name as something else in your program file, you can create errors that are hard to diagnose. I show this here because even though it's not a recommended approach, you're likely to see it in other people's code at some point.
+
+If you need to import many classes from a module, you're better off importing the entire module and using the **_module\_name.ClassName_** syntax.
+
+
+## Importing a module into a module
+
+Sometimes you'll want to spread out your classes over several modules to keep any one file from growing too large and avoid storing unrelated classes in the same module. When you store your clases in several modules, you may find that a class in one module depends on a class in several modules, you may find that a class in one module depends on a class in another module. When this happens, you can import the required class into the first module.
+
+```python  
+# electric_car.py
+from car import Car
+```
+
+## Using aliases
+
+As you saw in Chapter 8, aliases can be quite helpful when using modules to organize youre projects' code. You can use aliases when importing classes as well.
+
+As an example, consider a program where you want to make a bunch of electric cars. It might get tedious to type (and read) ElectricCar over and over again. You can give ElectricCar an alias in the import statement:
+
+```python
+from electric_car import ElectricCar as EC # using EC alias
+```
+
+## Finding your personal workflow when using classes
+
+Python provides many options to structure code in a large project. It's important to know all these possibilities so you can determine the best ways to organize your projects as well as understand other people's projects.
+
+Try to keep your code simple. Try doing everything in one file at first and only move your classes to separate modules once everything is working. 
+
+When you are satisfied with how your modules and files interact, try storing your classes in modules when you start a project. First, try to make sure that your code works and then go from there.
+
+
+## The Python standard library
+
+Python standard library - set of modules with every Python installation. When you understand how functions and classes work, you should be using modules like these that other programmers have written.
+
+You can use any function or class in standard library by including a simple **_import_** statement at the top of your file.
+
+For example module random can be quite useful in many real-world situations.
+
+```python
+from random import randint
+randint(1, 6)
+```
+Another useful function from the same module is choice():
+
+```python
+from random import choice
+players = ['charles','martina','michael','florence','eli']
+first_up = choice(players) # this method takes a list or a tuple and returns a randomly chosen element
+first_up
+```

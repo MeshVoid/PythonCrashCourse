@@ -32,7 +32,7 @@ class Restaurant:
 # Three Restaurants: Start with your class from Exercise 9-1. Create three 
 # different instances from the class, and call describe_restaurant() 
 # for each instance.
-
+'''
 thai_restaurant = Restaurant('Oriental sun', 'thai')
 
 thai_restaurant.describe_restaurant()
@@ -46,3 +46,4 @@ resto.open_restaurant()
 kz_restaurant = Restaurant("Lagmankhana Aksai", "central asian")
 kz_restaurant.describe_restaurant()
 kz_restaurant.open_restaurant()
+'''
