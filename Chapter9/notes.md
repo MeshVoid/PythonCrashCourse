@@ -758,3 +758,17 @@ players = ['charles','martina','michael','florence','eli']
 first_up = choice(players) # this method takes a list or a tuple and returns a randomly chosen element
 first_up
 ```
+
+## Styling Classes
+
+Class names should be written in CamelCase. Do not use underscores, capitalize the first letter of each word in the name.
+
+Instance and module names should be written in lowercase with underscores between words.
+
+Every class should have docstring immediately following the class definition. Docstrings should be brief and describe what the class does. Each module should also have a docstring describing what the classes in a module can be used for.
+
+Within a class use one blank line between methods, and within a module you can use two blank lines to separate classes.
+
+If you need to import a module from the standard library and a module that you wrote, place the import statement for the standard library module first. Then add a blank line and the import statement for the module you wrote.
+
+In programs with multiple import statements, this convention makes it easier to see where
