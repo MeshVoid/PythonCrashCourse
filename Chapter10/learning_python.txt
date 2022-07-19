@@ -1,0 +1,5 @@
+In Python you can open and edit files, analyze data write games.
+In Python you can write conditional statements, loops and other complicated programs.
+In Python you can store variables, integers, floats and other data types.
+In Python you can sort things into different tuples, sets, lists, dictionaries.
+In Python you can access a lot of built-in modules to help you quickly write more complicate code.
