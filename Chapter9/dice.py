@@ -11,11 +11,11 @@ class Die:
     """A die that rolls the dice"""
     def __init__(self, sides):
         
-        self.sides = 6
+        self.sides = sides
     
     def roll_die(self, times_to_roll):
         """Roll the dice several times and print the values"""
-        print(f"Rolling the dice {times_to_roll} times:")
+        print(f"Rolling the dice with {self.sides} sides {times_to_roll} times:")
         for i in range(times_to_roll):
             print(f"\t{randint(0, self.sides)}")
 
@@ -23,4 +23,8 @@ class Die:
 
 die = Die(6)
 die.roll_die(3)
-die = Die(6)
+die2 = Die(10)
+die2.roll_die(10)
+die3 = Die(20)
+die3.roll_die(10)
+
