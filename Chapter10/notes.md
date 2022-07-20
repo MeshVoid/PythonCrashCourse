@@ -152,3 +152,53 @@ if birthday in pi_string:
 else:
     print("Your birthday does not appear in the first million digits of pi.")
 ```
+
+## Writing to a file
+
+One of the simplest ways to save data is to write it to a file. When you write text to a file, the output will still be available after you close the terminal containing your program's output. You can examine output after a program finishes running, and you can share the output files with others as well.
+
+You can also write programs that read text back into memory and work with it again later.
+
+## Writing to an empty file
+
+To write text to a file, you need to call **_open()_** with a second argument telling Python that you want to write the file. 
+
+Example:
+
+```python
+filename ='Chapter10\programming.txt' # file adress
+
+with open(filename, 'w') as file_object: # we use second argument 'w' to open the file in WRITE MODE.
+    file_object.write("I love programming") # use write() method on the file object to write a string to the file.
+```
+_You can also open a file in read mode -> ('r'), write mode -> ('w'), append mode -> ('a'), or a mode that allows you to read and write to the file -> ('r+')_
+
+_When you omit the mode argument, Python opens the file in read-only mode by default. Python can only write strings to a text file. If you want to store numerical data in a text file, you'll have to convert the data to string format first using the str() function._
+
+## Writing multiple lines
+
+The _**write()**_ function doesn't add any newlines to the text you write. So if you write more than one line without including newline characters, your file may not look the way you want it to:
+
+```python
+filename ='Chapter10\programming.txt' # file adress
+
+with open(filename, 'w') as file_object: 
+    file_object.write("I love programming.\n") # just using write method will not add the string into a new line
+    file_object.write('I love creating new games.\n') # use \n at the end to add new lines
+```
+You can also use spaces, tab characters, and blank lines to format your output, just as you've been doing with terminal-based output.
+
+## Appending to a file
+
+If you want to add content to a file instead of writing over existing content, you can open the file in **_append mode_**. When you open a file in append mode, Python doesn't erase the contents of the file before returning the file object. Any lines you write to the file will be added at the end of the file. If the file doesn't exist yet, Python will create an empty file for you.
+
+```python
+filename = 'Chapter10\programming.txt'
+
+with open(filename, 'a') as file_object: # 'a' argument to open the file for appending rather writing over the existing file.
+    file_object.write("\nI also love finding meaning in large datasets.\n") # write two new lines, which are added to programming.txt
+    file_object.write("I love creatig apps that can run in a browser.\n")
+```
+
+## Exceptions
+
