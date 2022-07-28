@@ -200,5 +200,321 @@ with open(filename, 'a') as file_object: # 'a' argument to open the file for app
     file_object.write("I love creatig apps that can run in a browser.\n")
 ```
 
-## Exceptions
+# Exceptions
+
+Python uses special objects called **_exceptions_** to manage errors that arise during a program's execution. Whenever an error occurs that makes Python unsure what to do next, it creates an exception object.
+If you will not code that will handle the exception condition when it's met, then the program will halt and show a traceback, which includes a report of the exception that was raised.
+
+Exceptions are handled with _**try-except**_ blocks. 
+
+## Handling the ZeroDivisionError exception
+
+```python
+print(5/0) # Python will throw a ZeroDivisionError error as it can't divide int by zero
+```
+output will looklike:
+> Traceback (most recent call last):   
+> File "division_calculator.py", line 1, in <module>     
+> print(5/0) u ZeroDivisionError: division by zero
+
+Instead of running into this error we could write:
+```python
+try:
+    print(5/0) # Python will throw an error as it can't divide int by zero
+except ZeroDivisionError:
+    print("You can't divide by zero!") # print this when error occurs
+```
+If more code followed the try-except block, the program would continue running because we told Python how to handle the error.
+
+## Using exceptions to prevent crashes
+
+Handling errors correctly is especially important when the program has more work to do after the error occurs. This happens often in programs that prompt users for input. If the program responds to invalid input appropriately, it can prompt for more valid input instead of crashing.
+
+```python
+print("Give me two numbers, and I'll divide them.")
+print("Enter 'q' to quit.")
+
+while True:
+    first_number = input("\nFirst number: ")
+    if first_number == 'q': # 1
+        break
+    second_number = input("Second number: ") # 2
+    if second_number == 'q':
+        break
+    answer = int(first_number) / int(second_number)
+    print(answer)
+```
+This program prompts the user to input a first_number (#1) and, if the user does not enter q to quit, a second_number (#2). We then divide these two numbers to get an answer (#3). This causes following output:
+
+> Traceback (most recent call last): 
+> File "division_calculator.py", line 9, in <module>
+> answer = int(first_number) / int(second_number)
+> ZeroDivisionError: division by zero
+
+## The else block
+
+We can make this program more error resistant by wrapping the line that might produce errors in a **_try-except_** block. The error occurs on the line that performs the division, so that's where we'll put the **_try-except_** block.
+
+```python
+print("Give me two numbers, and I'll divide them.")
+print("Enter 'q' to quit.")
+
+while True:
+    first_number = input("\nFirst number: ")
+    if first_number == 'q':
+        break
+    second_number = input("Second number: ")
+    if second_number == 'q':
+        break
+    try: # 1
+        answer = int(first_number) / int(second_number)
+    except ZeroDivisionError: # 2
+        print("You can't divide by 0!")
+    else: # 2
+        print(answer)
+```
+#1 - we ask Python to try to complete the division operation in a try block, which includes the code that might cause an error.
+#2 - The except block tells Python how to respond when a ZeroDivisionError arises. If the try block doesn't succeed because of a division by zero error, we print a friendly message telling the user how to avoid this kind of error.
+#3 - If the division operation is successful, we use the else block to print the result.
+
+**_try-except-else_** block works like this: Python attempts to run the code in the _**try**_ block. The only code that should go in a try block is code that might cause an exception error. The **_except_** block tells Python what to do in case a certain exception arises when it tries to run the code in the **_try_** block.
+
+By anticipating likely sources of errors, you can write robust programs that continue to run even when they encounter invalid data and missing resources. Your code will be resistant to innocent user mistakes and malicious attacks.
+
+## Handling the FileNotFoundError exception
+
+One common issue when working with files is handling missing files. The file you're looking for might be in a different location, the filename may be misspelled, or the file may not exist at all. All these situations can be handled with a _**try-except**_ block.
+
+**Example:**
+```python
+file_name = "Chapter10/alice.txt"
+
+with open(file_name, encoding='utf-8') as f:
+    contents = f.read()
+```
+Python can't read the from a missing file, so it raises an exception:
+> Traceback (most recent call last):   
+> File "alice.py", line 3, in <module>     
+> with open(filename, encoding='utf-8') as f: 
+> FileNotFoundError: [Errno 2] No such file or directory: 'alice.txt'
+
+Because error occurs when open() function is at play we will use try block to handle it:
+```python
+file_name = "Chapter10/alice.txt"
+
+try:
+    with open(file_name, encoding='utf-8') as f:
+        contents = f.read()
+except FileNotFoundError:
+    print(f"Sorry, the file {file_name} does not exist.")
+```
+
+## Analyzing text
+
+You can analyze text files containing entire books. Many classic works of literature are available as simple text files because they are in the public domain.
+
+To count the number of words in Alice in Wonderland book we'll use **_split()_** method on the entire text.
+Then we'll count the items in the list to get a rough idea of the number of words in the text:
+
+```python
+file_name = "Chapter10/alice.txt"
+
+try:
+    with open(file_name, encoding='utf-8') as f:
+        contents = f.read()
+except FileNotFoundError:
+    print(f"Sorry, the file {file_name} does not exist.")
+
+else:
+    # Count the approximate number of words in the file.
+    words = contents.split()
+    num_words = len(words)
+    print(f"The file {file_name} has about {num_words} words.")
+```
+
+## Working with multiple files
+
+Let's add more files to analyze.
+
+```python
+def count_words(file_name):
+    """Count the approximate number of words in a file"""
+    try:
+        with open(file_name, encoding='utf-8') as file:
+            contents = file.read()
+    except FileNotFoundError:
+        print(f"Sorry, the file {file_name} does not exist.")
+    else:
+        words = contents.split()
+        num_words = len(words)
+        print(f"The file {file_name} has about {num_words} words.")
+
+file_names = ['Chapter10/alice.txt', 'Chapter10/guest_book.txt', 'siddhartha.txt']
+for file_name in file_names:
+    count_words(file_name)
+
+```
+Output:
+>The file Chapter10/alice.txt has about 30360 words.
+
+>The file Chapter10/guest_book.txt has about 42 words.
+
+>Sorry, the file siddhartha.txt does not exist.
+
+As you can see the try-except block in this example provides significant advantages. We prevent our users from seeing a traceback message, and we let the program to continue analyzing the text files it was able to find. I we didn't use try-except block then our program would raise FileNotFoundError and stop running.
+
+
+## Failing silently
+
+Python has _pass_ statement that tells it to do nothing in a block:
+
+```python
+def count_words(file_name):
+    """Count the approximate number of words in a file"""
+    try:
+        with open(file_name, encoding='utf-8') as file:
+            contents = file.read()
+    except FileNotFoundError:
+        pass # using pass statement to do nothing
+    else:
+        words = contents.split()
+        num_words = len(words)
+        print(f"The file {file_name} has about {num_words} words.")
+
+file_names = ['Chapter10/alice.txt', 'Chapter10/guest_book.txt', 'siddhartha.txt']
+for file_name in file_names:
+    count_words(file_name)
+```
+
+The _**pass**_ statement also acts as a placeholder. It's a reminder that you're choosing to do nothing at a specific point in your program's execution and that you might want to do something there later. For example, in this program we might decide to write any missing filenames to a file called _missing\_files.txt_ . Our users woudn't see this file, but we'd be able to read the file and deal with any missing texts.
+
+## Storing data
+
+Many of your programs will ask users to input certain kinds of information. You might allow users to store preferences in a game or provide data for a visualization. Whatever the focus of your program is, you'll store the information users provide in a data structures such as lists and dictionaries. 
+
+When the user closes a program, you'll almost always want to save the information they entered. A simple way to do this involves storing your data using the json module.
+
+_**The json**_ module allows you to dump simple Python data structures into a file and load the data from that file the next time the program runs. You can also use json to share data between different Python programs. Even better, the JSON data format is not specific to Python, so you can share data you store in the JSON format with people who work in many other programming languages. 
+
+_The JSON (JavaScript Object Notation) format was originally developed for JavaScript. However, it has since become a common format used by many languages, including Python_
+
+## Using json.dump() and json.load()
+
+Let's write a short program that stores a set of numbers and another program that reads these numbers back into memory. 
+
+```python
+import json
+
+numbers = [1, 3, 5, 7, 11, 13]
+
+filename = 'Chapter10/numbers.json' # we choose a filename to store the numbers.
+with open(filename, 'w') as f: # We open the file in write mode, which allows json to write data to the file.
+    json.dump(numbers, f) # we use json.dump() function to store the list numbers in the file numbers.json
+```
+
+Now we'll write a program thta uses json.load() to read the list back into memory:
+
+```python
+import json
+
+filename = 'Chapter10/numbers.json' # file address
+with open(filename) as file: # open the file in read mode
+    numbers = json.load(file) # json.load() load the information stored in numbers.json and assign in to the variable names
+
+[print(numbers)]
+```
+
+## Saving and reading user-generated data
+
+Saving data with json is useful when you're working with user-generated data, because if you don't store your user's information somehow, you'll lose it when the program stops running.
+
+_Example where we prompt the user for their name the first time they run a program and then store their name when they run the program again:_
+```python
+#remember_me.py
+import json
+
+username = input("What is your name?\n") # prompt for a username to store
+
+filename = "Chapter10/username.json" 
+with open(filename, 'w') as file:
+    json.dump(username, file) # use json.dump(), pass username and a file as an object, to sore it in a file
+    print(f"We'll remember you when you come back, {username}!") # print message, informing the user that we've stored their information
+```
+
+Other program that greets a user whose name has already been stored:
+
+```python
+# greet_user.py
+import json
+
+file_name = "Chapter10/username.json"
+
+with open(file_name) as file:
+    username = json.load(file) # user json.load() to read info in username.json
+    print(f"Welcome back, {username}!") # welcome user
+```
+
+_**Let's combine both programs in to one with the help of try-except-else block:**_
+```python
+import json
+
+# Load teh username, if it has been stored previously.
+# Otherwise, prompt for the username and store it.
+
+filename = "Chapter10/username.json"
+try: 
+    with open(filename) as file: # open usernam.json, if the file exist read it into memory
+        username = json.load(file) 
+except FileNotFoundError: # If file doesn't exist we prompt the user to enter their username
+    username = input("What is your name?\n")
+    with open(filename, 'w') as file: # we use json.dump() to store the username and print a greeting
+        json.dump(username, file) 
+        print(f"We'll remember you when you come back, {username}!")
+else:
+    print(f"Welcome back, {username}!") # welcome back if username exists
+```
+
+## Refactoring
+
+Often you'll come to a point where your code will work, but you'll recognize that you could improve the code by breaking it up into a series of functions that have specific jobs. This process is called _**refactoring**_. Refactoring makes your code cleaner, easier to understand, and easier to extend.
+
+Here's a refactored version of the program above:
+```python
+import json
+
+# Load the username, if it has been stored previously.
+# Otherwise, prompt for the username and store it.
+
+def get_stored_username():
+    """Get stored username if available."""
+    filename = "Chapter10/username.json"
+    try: 
+        with open(filename) as file: # open usernam.json, if the file exist read it into memory
+            username = json.load(file) 
+    except FileNotFoundError: # If file doesn't exist we prompt the user to enter their username
+        return None
+    else:
+        return username
+
+def get_new_username():
+    """Prompt for a new username."""
+    username = input("What is your name?\n")
+    filename = 'Chapter10/username.json'
+    with open(filename, 'w') as file: 
+        json.dump(username, file) 
+    return username
+
+
+def greet_user():
+    """Greet the user by name."""
+    username = get_stored_username()
+    if username:
+        print(f"Welcome back, {username}!") # welcome back if username exists
+    else:
+        username = get_new_username()
+        print(f"We'll remember you when you come back, {username}!")
+
+greet_user()
+```
+
 
