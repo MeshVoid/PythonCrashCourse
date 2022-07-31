@@ -6,6 +6,8 @@ Completion of every goddamn exercise from every single chapter and a example pro
 Every chapter has notes.md in it containing all the notes I took from each chapter of the book.
 Should be a great help when I would like to refresh my memories on Python fundamentals, I guess.
 
+## Part 1: Theory (stored in current repository)
+
 * [Chapter 1: Basics and installation](Chapter1/notes.md)
 * [Chapter 2: Variables and basic data types](Chapter2/notes.md)
 * [Chapter 3: Lists](Chapter3/notes.md)
@@ -17,3 +19,6 @@ Should be a great help when I would like to refresh my memories on Python fundam
 * [Chapter 9: Classes](Chapter9/notes.md)
 * [Chapter 10: Files and exceptions](Chapter10/notes.md)
 * [Chapter 11: Testing your Code](Chapter11/notes.md)
+
+## Part 2: Projects (stored in separate repositories)
+* Project 1: Alien Invasion game
